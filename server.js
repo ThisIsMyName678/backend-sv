@@ -22,6 +22,15 @@ const recipeSchema = new mongoose.Schema({
 
 const RecipeModel = mongoose.model('Recipe', recipeSchema);
 
+app.get('/recipes', async (req, res) => {
+    try {
+        const recipes = await RecipeModel.find();
+        res.json(recipes);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 app.post('/recipes', (req, res) => {
     RecipeModel.insertOne({title: req.body.title, ingredients: req.body.ingredients, instructions: req.body.instructions});
     res.send({message: 'Recipe created'});
